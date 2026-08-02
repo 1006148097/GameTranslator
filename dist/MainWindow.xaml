@@ -1,0 +1,240 @@
+<Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="#F3F0E8">
+    <Grid.Resources>
+        <SolidColorBrush x:Key="Ink" Color="#151515"/>
+        <SolidColorBrush x:Key="Orange" Color="#FF6A00"/>
+        <SolidColorBrush x:Key="Line" Color="#C9C5BC"/>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+            <Setter Property="FontFamily" Value="Microsoft YaHei UI"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#F3F0E8"/>
+            <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Ink}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style TargetType="Slider">
+            <Setter Property="Foreground" Value="{StaticResource Orange}"/>
+        </Style>
+    </Grid.Resources>
+
+    <Grid.RowDefinitions>
+        <RowDefinition Height="66"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="52"/>
+    </Grid.RowDefinitions>
+
+    <Border Grid.Row="0" BorderBrush="{StaticResource Ink}" BorderThickness="0,0,0,1">
+        <Grid Margin="22,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="42"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Image x:Name="HeaderLogo"
+                   Width="32" Height="32"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Stretch="Uniform"/>
+            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                <TextBlock Text="游戏翻译器"
+                           FontSize="19" FontWeight="Bold"/>
+                <TextBlock Text="截图 · 翻译 · 替换 · 输出"
+                           FontSize="9"
+                           Foreground="#67645F" Margin="0,3,0,0"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2" Orientation="Horizontal"
+                        VerticalAlignment="Center">
+                <Ellipse Width="9" Height="9" Fill="#FF6A00" Margin="0,0,8,0"/>
+                <TextBlock x:Name="HeaderStatus" Text="就绪"
+                           FontSize="10"
+                           FontWeight="Bold"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+
+    <Grid Grid.Row="1" Margin="22,8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="16"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0">
+            <TextBlock Text="截图设置"
+                       FontSize="11" FontWeight="Bold" Foreground="#FF6A00"/>
+            <TextBlock Text="截图" FontSize="22" FontWeight="Bold"
+                       Margin="0,1,0,4"/>
+
+            <Border BorderBrush="{StaticResource Ink}" BorderThickness="1"
+                    Padding="8">
+                <StackPanel>
+                    <TextBlock Text="截图快捷键"
+                               FontSize="9" FontWeight="Bold"/>
+                    <Button x:Name="HotkeyButton" Content="F8"
+                            Margin="0,3,0,0" Padding="10,5"
+                            HorizontalContentAlignment="Left"/>
+                    <TextBlock Text="输出框开关键"
+                               FontSize="9" FontWeight="Bold"
+                               Margin="0,6,0,0"/>
+                    <Button x:Name="ToggleHotkeyButton"
+                            Content="F7"
+                            Margin="0,3,0,0" Padding="10,5"
+                            HorizontalContentAlignment="Left"/>
+                </StackPanel>
+            </Border>
+
+            <Border BorderBrush="{StaticResource Line}" BorderThickness="1"
+                    Margin="0,6,0,0" Padding="9">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <TextBlock x:Name="TranslationProviderName"
+                                   Text="智能在线翻译"
+                                   FontSize="12" FontWeight="Bold"/>
+                        <TextBlock x:Name="TranslationProviderDescription"
+                                   Text="Google 优先 · 自动备用 · 无需密钥"
+                                   FontSize="11" Foreground="#67645F"
+                                   Margin="0,3,0,0"/>
+                    </StackPanel>
+                    <Button x:Name="TranslationProviderButton"
+                            Grid.Column="1"
+                            Content="选择接口"
+                            Background="#FF6A00"
+                            Foreground="White"
+                            BorderBrush="#FF6A00"
+                            Padding="8,5"
+                            VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+
+            <Button x:Name="CaptureButton" Content="立即截图"
+                    Background="#151515" Foreground="White"
+                    Margin="0,6,0,0" Padding="10,7"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2">
+            <TextBlock Text="输出设置"
+                       FontSize="11" FontWeight="Bold" Foreground="#FF6A00"/>
+            <TextBlock Text="输出框" FontSize="22" FontWeight="Bold"
+                       Margin="0,1,0,4"/>
+
+            <Border BorderBrush="{StaticResource Ink}" BorderThickness="1"
+                    Padding="11">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="字体大小"
+                                   FontSize="9" FontWeight="Bold"/>
+                        <TextBlock x:Name="FontSizeValue" Grid.Column="1"
+                                   Text="20 像素"
+                                   FontSize="10" FontWeight="Bold"
+                                   Foreground="#FF6A00"/>
+                    </Grid>
+                    <Slider x:Name="FontSizeSlider" Minimum="14" Maximum="36"
+                            TickFrequency="1" IsSnapToTickEnabled="True"
+                            Margin="0,5,0,12"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="不透明度"
+                                   FontSize="9" FontWeight="Bold"/>
+                        <TextBlock x:Name="OpacityValue" Grid.Column="1"
+                                   Text="22 %" FontFamily="Consolas"
+                                   FontSize="10" FontWeight="Bold"
+                                   Foreground="#FF6A00"/>
+                    </Grid>
+                    <Slider x:Name="OpacitySlider" Minimum="5" Maximum="85"
+                            TickFrequency="1" IsSnapToTickEnabled="True"
+                            Margin="0,5,0,12"/>
+
+                    <Button x:Name="AdjustPositionButton"
+                            Content="调整输出框位置"
+                            Background="#FF6A00" Foreground="White"
+                            BorderBrush="#FF6A00"/>
+                </StackPanel>
+            </Border>
+
+            <TextBlock Text="文本替换"
+                       FontSize="11" FontWeight="Bold" Foreground="#FF6A00"
+                       Margin="0,14,0,0"/>
+            <TextBlock Text="替换" FontSize="22" FontWeight="Bold"
+                       Margin="0,1,0,4"/>
+
+            <Border BorderBrush="{StaticResource Ink}" BorderThickness="1"
+                    Padding="11">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="全局快捷键"
+                                   FontSize="9" FontWeight="Bold"/>
+                        <TextBlock x:Name="TextReplacementHotkeyValue"
+                                   Grid.Column="1"
+                                   Text="F6"
+                                   FontFamily="Consolas"
+                                   FontSize="10" FontWeight="Bold"
+                                   Foreground="#FF6A00"/>
+                    </Grid>
+                    <Grid Margin="0,9,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="目标语言"
+                                   FontSize="9" FontWeight="Bold"/>
+                        <TextBlock x:Name="TextReplacementTargetValue"
+                                   Grid.Column="1"
+                                   Text="简体中文"
+                                   FontSize="10" FontWeight="Bold"
+                                   Foreground="#FF6A00"/>
+                    </Grid>
+                    <Button x:Name="TextReplacementButton"
+                            Content="设置文本替换"
+                            Background="#151515"
+                            Foreground="White"
+                            Margin="0,11,0,0"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
+
+    <Border Grid.Row="2" BorderBrush="{StaticResource Ink}" BorderThickness="0,1,0,0">
+        <Grid Margin="22,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="FooterStatus" Text="就绪"
+                       FontSize="9"
+                       FontWeight="Bold" VerticalAlignment="Center"/>
+            <Button x:Name="PreviewButton" Grid.Column="1"
+                    Content="预览" Padding="18,7"/>
+            <Button x:Name="SaveButton" Grid.Column="3"
+                    Content="保存" Padding="22,7"
+                    Background="#FF6A00" Foreground="White"
+                    BorderBrush="#FF6A00"/>
+        </Grid>
+    </Border>
+</Grid>

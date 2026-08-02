@@ -1,0 +1,19 @@
+# Local IDE and compiler artifacts
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.pdb
+
+# Regression executables are compiled temporarily by the test runner
+tests/*-regression.exe
+tests/OcrBridge.ps1
+tests/diagnostic-fixtures/
+
+# Windows and temporary files
+Thumbs.db
+Desktop.ini
+*.tmp
+*.log
+
