@@ -22,6 +22,7 @@ namespace GameTranslator
         [DataMember] public bool DeepLUseFreeApi { get; set; }
         [DataMember] public string MicrosoftTranslatorKey { get; set; }
         [DataMember] public string MicrosoftTranslatorRegion { get; set; }
+        [DataMember] public string MicrosoftTranslatorEndpoint { get; set; }
         [DataMember] public string LibreTranslateEndpoint { get; set; }
         [DataMember] public string LibreTranslateApiKey { get; set; }
         [DataMember] public string LingvaEndpoint { get; set; }
@@ -40,6 +41,8 @@ namespace GameTranslator
                 OverlayTop = 80,
                 TranslationProvider = "智能在线翻译",
                 DeepLUseFreeApi = true,
+                MicrosoftTranslatorEndpoint =
+                    "https://api.cognitive.microsofttranslator.com",
                 LibreTranslateEndpoint =
                     "https://translate.argosopentech.com",
                 LingvaEndpoint = "https://lingva.lunar.icu"

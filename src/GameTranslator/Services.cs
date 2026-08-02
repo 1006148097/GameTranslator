@@ -109,6 +109,12 @@ namespace GameTranslator
                         settings.LingvaEndpoint =
                             "https://lingva.lunar.icu";
                     }
+                    if (string.IsNullOrWhiteSpace(
+                        settings.MicrosoftTranslatorEndpoint))
+                    {
+                        settings.MicrosoftTranslatorEndpoint =
+                            "https://api.cognitive.microsofttranslator.com";
+                    }
                     if (string.IsNullOrWhiteSpace(settings.DeepLApiKey))
                     {
                         settings.DeepLUseFreeApi = true;
@@ -1549,8 +1555,8 @@ namespace GameTranslator
 
     public sealed class ResilientTranslationProvider : ITranslationProvider
     {
-        private readonly GoogleTranslationProvider _primary =
-            new GoogleTranslationProvider();
+        private readonly MicrosoftTranslationProvider _primary =
+            new MicrosoftTranslationProvider();
         private readonly MyMemoryTranslationProvider _fallback =
             new MyMemoryTranslationProvider();
 
@@ -1629,7 +1635,7 @@ namespace GameTranslator
                 }
 
                 throw new InvalidOperationException(
-                    "Google 和 MyMemory 均未能完成翻译，请检查网络或更换接口。",
+                    "Microsoft Translator 和 MyMemory 均未能完成翻译，请检查网络、密钥或更换接口。",
                     lastError);
             }
         }
@@ -1928,6 +1934,16 @@ namespace GameTranslator
                 throw new InvalidOperationException(
                     "Microsoft Translator 尚未填写密钥，请在“选择接口”中配置。");
             }
+            Uri endpoint;
+            if (!Uri.TryCreate(
+                    settings.MicrosoftTranslatorEndpoint,
+                    UriKind.Absolute,
+                    out endpoint)
+                || endpoint.Scheme != Uri.UriSchemeHttps)
+            {
+                throw new InvalidOperationException(
+                    "Microsoft Translator 服务地址无效，请填写 HTTPS 地址。");
+            }
         }
 
         protected override async Task<string> TranslateChunkAsync(
@@ -1936,8 +1952,9 @@ namespace GameTranslator
             AppSettings settings,
             CancellationToken cancellationToken)
         {
-            var url = "https://api.cognitive.microsofttranslator.com"
-                + "/translate?api-version=3.0&to="
+            var url = BuildTranslateUrl(
+                    settings.MicrosoftTranslatorEndpoint)
+                + "?api-version=3.0&to="
                 + Uri.EscapeDataString(
                     TranslationLanguages.ToMicrosoftCode(
                         request.TargetLanguage));
@@ -1996,6 +2013,36 @@ namespace GameTranslator
                     "Microsoft Translator 没有返回译文。");
             }
             return result.Trim();
+        }
+
+        public static string BuildTranslateUrl(string endpoint)
+        {
+            var value = (endpoint ?? "").Trim().TrimEnd('/');
+            if (value.EndsWith(
+                "/translate",
+                StringComparison.OrdinalIgnoreCase))
+            {
+                return value;
+            }
+            if (value.EndsWith(
+                "/translator/text/v3.0",
+                StringComparison.OrdinalIgnoreCase))
+            {
+                return value + "/translate";
+            }
+
+            Uri uri;
+            if (Uri.TryCreate(value, UriKind.Absolute, out uri)
+                && (uri.Host.EndsWith(
+                        ".cognitiveservices.azure.com",
+                        StringComparison.OrdinalIgnoreCase)
+                    || uri.Host.EndsWith(
+                        ".cognitiveservices.azure.cn",
+                        StringComparison.OrdinalIgnoreCase)))
+            {
+                return value + "/translator/text/v3.0/translate";
+            }
+            return value + "/translate";
         }
     }
 

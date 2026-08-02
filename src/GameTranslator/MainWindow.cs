@@ -300,7 +300,7 @@ namespace GameTranslator
                     break;
                 case "Microsoft Translator":
                     _translationProviderDescription.Text =
-                        "稳定快速 · 使用 Azure Translator 密钥";
+                        "国内通常可直连 · 支持 Azure 自定义端点";
                     break;
                 case "Google 在线翻译":
                     _translationProviderDescription.Text =
@@ -325,7 +325,7 @@ namespace GameTranslator
                 default:
                     _translationProviderName.Text = "智能在线翻译";
                     _translationProviderDescription.Text =
-                        "Google 优先 · 2.5 秒后并行备用";
+                        "本地游戏词典 · 微软 / MyMemory 直连";
                     break;
             }
         }
