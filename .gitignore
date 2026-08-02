@@ -17,3 +17,5 @@ Desktop.ini
 *.tmp
 *.log
 
+# Machine-specific Windows shortcut; use the portable VBS launcher in Git
+游戏翻译器.lnk
