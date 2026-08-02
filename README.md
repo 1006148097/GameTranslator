@@ -50,8 +50,8 @@ PowerShell 中运行：
   LibreTranslate 公共／自建节点。
 - 需要密钥的选项包括 DeepL、Microsoft Translator 和
   LibreTranslate API。
-- 默认使用国内友好的智能在线翻译：常见游戏菜单先由内置词典即时翻译；
-  已配置 Microsoft Translator 时优先使用微软，否则直连 MyMemory。
+- 默认使用智能在线翻译：常见游戏菜单先由内置词典即时翻译；完整句子
+  优先请求 Google，2.5 秒无结果时并行启用 MyMemory 备用。
 - 内置游戏词典可离线翻译常见英／日／韩菜单项，并在所有接口返回后保护
   `DPS`、`HP`、`MP`、`NPC`、`PVP` 等常见游戏缩写，避免变成形近数字。
 - Microsoft Translator 支持全球端点、Azure 中国区端点和自定义资源端点；
@@ -72,10 +72,10 @@ PowerShell 中运行：
 6. 点击“文本替换”设置快捷键和目标语言；在普通文本框中选中文字后按
    `F6`，等待托盘提示，再按 `Ctrl+V` 粘贴译文。
 
-翻译默认先查询内置游戏词典，常见菜单无需联网即可立即显示；完整句子使用
-MyMemory 直连。填写 Microsoft Translator 密钥后，智能模式会自动优先使用微软，
-连接超时时仍会切换到 MyMemory。程序会把同一截图中的多行对白作为一个上下文整体
-发送，以改善代词、语气和连续句子的准确性；Google 仍可在接口页面中手动选择。
+翻译默认先查询内置游戏词典，常见菜单无需联网即可立即显示；完整句子优先使用
+Google，2.5 秒无结果时并行启用 MyMemory，任一成功即采用。Microsoft Translator
+仍可在接口页面中手动选择。程序会把同一截图中的多行对白作为一个上下文整体发送，
+以改善代词、语气和连续句子的准确性。
 
 DeepL 和 Microsoft Translator 需要各自的 API 密钥。Microsoft 可填写 Azure
 门户“密钥和终结点”页面中的服务地址及区域；LibreTranslate 支持自建服务地址，

@@ -104,7 +104,7 @@
                                    Text="智能在线翻译"
                                    FontSize="12" FontWeight="Bold"/>
                         <TextBlock x:Name="TranslationProviderDescription"
-                                   Text="本地游戏词典 · 微软 / MyMemory 直连"
+                                   Text="本地游戏词典 · Google 优先 · 自动备用"
                                    FontSize="11" Foreground="#67645F"
                                    Margin="0,3,0,0"/>
                     </StackPanel>

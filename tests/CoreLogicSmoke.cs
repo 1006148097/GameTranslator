@@ -7,6 +7,19 @@ internal static class CoreLogicSmoke
 {
     private static int Main()
     {
+        var smartProvider = TranslationProviderFactory.Create(
+            "智能在线翻译");
+        var primaryProviderField = typeof(ResilientTranslationProvider)
+            .GetField("_primary", BindingFlags.Instance | BindingFlags.NonPublic);
+        var primaryProvider = primaryProviderField == null
+            ? null
+            : primaryProviderField.GetValue(smartProvider);
+        if (!(primaryProvider is GoogleTranslationProvider))
+        {
+            Console.Error.WriteLine("SMART_PROVIDER_GOOGLE_PRIORITY_FAILED");
+            return 1;
+        }
+
         string localTranslation;
         if (!GameTranslationGlossary.TryTranslateText(
                 "Continue\nExit Game",

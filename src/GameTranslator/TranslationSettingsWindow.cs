@@ -228,7 +228,7 @@ namespace GameTranslator
             return CreateProviderCard(
                 "01",
                 "智能在线翻译",
-                "本地游戏词典优先 · 微软（已配置时）· MyMemory 直连备用",
+                "本地游戏词典优先 · Google 优先 · MyMemory 延迟备用",
                 null);
         }
 

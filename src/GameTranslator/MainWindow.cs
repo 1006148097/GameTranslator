@@ -325,7 +325,7 @@ namespace GameTranslator
                 default:
                     _translationProviderName.Text = "智能在线翻译";
                     _translationProviderDescription.Text =
-                        "本地游戏词典 · 微软 / MyMemory 直连";
+                        "本地游戏词典 · Google 优先 · 自动备用";
                     break;
             }
         }

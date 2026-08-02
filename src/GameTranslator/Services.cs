@@ -1555,8 +1555,8 @@ namespace GameTranslator
 
     public sealed class ResilientTranslationProvider : ITranslationProvider
     {
-        private readonly MicrosoftTranslationProvider _primary =
-            new MicrosoftTranslationProvider();
+        private readonly GoogleTranslationProvider _primary =
+            new GoogleTranslationProvider();
         private readonly MyMemoryTranslationProvider _fallback =
             new MyMemoryTranslationProvider();
 
@@ -1635,7 +1635,7 @@ namespace GameTranslator
                 }
 
                 throw new InvalidOperationException(
-                    "Microsoft Translator 和 MyMemory 均未能完成翻译，请检查网络、密钥或更换接口。",
+                    "Google 和 MyMemory 均未能完成翻译，请检查网络或更换接口。",
                     lastError);
             }
         }
