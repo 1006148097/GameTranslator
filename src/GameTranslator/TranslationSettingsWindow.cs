@@ -30,6 +30,7 @@ namespace GameTranslator
         private CheckBox _deepLFreeApi;
         private PasswordBox _microsoftKey;
         private TextBox _microsoftRegion;
+        private TextBox _microsoftEndpoint;
         private TextBox _lingvaEndpoint;
         private TextBox _libreNoKeyEndpoint;
         private TextBox _libreApiEndpoint;
@@ -116,8 +117,8 @@ namespace GameTranslator
             options.Children.Add(CreateGroupHeader(
                 "需要 API 密钥",
                 "组内综合性能从高到低 · 需自行申请对应服务"));
-            options.Children.Add(CreateDeepLCard());
             options.Children.Add(CreateMicrosoftCard());
+            options.Children.Add(CreateDeepLCard());
             options.Children.Add(CreateLibreApiCard());
 
             var scroll = new ScrollViewer
@@ -148,7 +149,7 @@ namespace GameTranslator
             });
             footer.Children.Add(new TextBlock
             {
-                Text = "API 密钥仅保存在本机设置中",
+                Text = "内置游戏词典无需联网 · API 密钥仅保存在本机",
                 FontFamily = new FontFamily("Microsoft YaHei UI"),
                 FontSize = 10,
                 Foreground = Muted,
@@ -192,7 +193,7 @@ namespace GameTranslator
             fields.Children.Add(_deepLKey);
             fields.Children.Add(_deepLFreeApi);
             return CreateProviderCard(
-                "01",
+                "02",
                 "DeepL API",
                 "质量优先 · 需要 DeepL API 密钥",
                 fields);
@@ -205,15 +206,20 @@ namespace GameTranslator
             _microsoftRegion = CreateTextBox(
                 _settings.MicrosoftTranslatorRegion,
                 "例如：eastasia（部分资源可留空）");
+            _microsoftEndpoint = CreateTextBox(
+                _settings.MicrosoftTranslatorEndpoint,
+                "全球：https://api.cognitive.microsofttranslator.com；中国区：https://api.translator.azure.cn");
             var fields = new StackPanel();
+            fields.Children.Add(CreateFieldLabel("服务地址"));
+            fields.Children.Add(_microsoftEndpoint);
             fields.Children.Add(CreateFieldLabel("订阅密钥"));
             fields.Children.Add(_microsoftKey);
             fields.Children.Add(CreateFieldLabel("区域"));
             fields.Children.Add(_microsoftRegion);
             return CreateProviderCard(
-                "02",
+                "01",
                 "Microsoft Translator",
-                "稳定快速 · 需要 Azure Translator 密钥",
+                "国内通常可直连 · 支持全球、中国区和自定义端点",
                 fields);
         }
 
@@ -222,7 +228,7 @@ namespace GameTranslator
             return CreateProviderCard(
                 "01",
                 "智能在线翻译",
-                "Google 优先 · 2.5 秒未响应则并行启用 MyMemory · 无需密钥",
+                "本地游戏词典优先 · Google 优先 · MyMemory 延迟备用",
                 null);
         }
 
@@ -438,6 +444,16 @@ namespace GameTranslator
                 ShowValidation("请填写 Microsoft Translator 订阅密钥。");
                 return;
             }
+            if ((provider == "Microsoft Translator"
+                    || (provider == "智能在线翻译"
+                        && !string.IsNullOrWhiteSpace(
+                            _microsoftKey.Password)))
+                && !IsValidSecureEndpoint(_microsoftEndpoint.Text))
+            {
+                ShowValidation(
+                    "请填写有效的 Microsoft Translator HTTPS 服务地址。");
+                return;
+            }
             if (provider == "LibreTranslate API"
                 && string.IsNullOrWhiteSpace(_libreKey.Password))
             {
@@ -469,6 +485,8 @@ namespace GameTranslator
                 _microsoftKey.Password.Trim();
             _settings.MicrosoftTranslatorRegion =
                 _microsoftRegion.Text.Trim();
+            _settings.MicrosoftTranslatorEndpoint =
+                _microsoftEndpoint.Text.Trim();
             _settings.LingvaEndpoint = _lingvaEndpoint.Text.Trim();
             if (provider == "LibreTranslate 免密钥"
                 || provider == "LibreTranslate API")
@@ -489,6 +507,16 @@ namespace GameTranslator
                     out endpoint)
                 && (endpoint.Scheme == Uri.UriSchemeHttp
                     || endpoint.Scheme == Uri.UriSchemeHttps);
+        }
+
+        private static bool IsValidSecureEndpoint(string value)
+        {
+            Uri endpoint;
+            return Uri.TryCreate(
+                    (value ?? "").Trim(),
+                    UriKind.Absolute,
+                    out endpoint)
+                && endpoint.Scheme == Uri.UriSchemeHttps;
         }
 
         private void ShowValidation(string message)

@@ -28,6 +28,20 @@ namespace GameTranslator
                 throw new ArgumentNullException("provider");
             }
 
+            string localTranslation;
+            if (GameTranslationGlossary.TryTranslateText(
+                request.Text,
+                request.TargetLanguage,
+                out localTranslation))
+            {
+                return new TranslationResult
+                {
+                    Text = localTranslation,
+                    Duration = TimeSpan.Zero,
+                    Provider = "内置游戏词典"
+                };
+            }
+
             using (var timeoutCancellation =
                 new CancellationTokenSource())
             using (var linkedCancellation =
@@ -63,6 +77,10 @@ namespace GameTranslator
                         throw new TranslationTimeoutException();
                     }
                     timeoutCancellation.CancelAfter(Timeout.Infinite);
+                    result.Text = GameTranslationGlossary.EnhanceResult(
+                        request.Text,
+                        result.Text,
+                        request.TargetLanguage);
                     return result;
                 }
                 catch (TranslationTimeoutException)

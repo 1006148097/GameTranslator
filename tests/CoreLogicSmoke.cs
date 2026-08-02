@@ -7,6 +7,65 @@ internal static class CoreLogicSmoke
 {
     private static int Main()
     {
+        var smartProvider = TranslationProviderFactory.Create(
+            "智能在线翻译");
+        var primaryProviderField = typeof(ResilientTranslationProvider)
+            .GetField("_primary", BindingFlags.Instance | BindingFlags.NonPublic);
+        var primaryProvider = primaryProviderField == null
+            ? null
+            : primaryProviderField.GetValue(smartProvider);
+        if (!(primaryProvider is GoogleTranslationProvider))
+        {
+            Console.Error.WriteLine("SMART_PROVIDER_GOOGLE_PRIORITY_FAILED");
+            return 1;
+        }
+
+        string localTranslation;
+        if (!GameTranslationGlossary.TryTranslateText(
+                "Continue\nExit Game",
+                "zh-Hans",
+                out localTranslation)
+            || localTranslation != "继续\n退出游戏")
+        {
+            Console.Error.WriteLine(
+                "LOCAL_GAME_GLOSSARY_FAILED=" + localTranslation);
+            return 1;
+        }
+
+        var enhancedTerms = GameTranslationGlossary.EnhanceResult(
+            "DPS and HP",
+            "085 和 hp",
+            "zh-Hans");
+        if (enhancedTerms != "DPS 和 HP")
+        {
+            Console.Error.WriteLine(
+                "GAME_TERM_PROTECTION_FAILED=" + enhancedTerms);
+            return 1;
+        }
+
+        var globalMicrosoftUrl =
+            MicrosoftTranslationProvider.BuildTranslateUrl(
+                "https://api.cognitive.microsofttranslator.com/");
+        var customMicrosoftUrl =
+            MicrosoftTranslationProvider.BuildTranslateUrl(
+                "https://sample.cognitiveservices.azure.com");
+        var chinaMicrosoftUrl =
+            MicrosoftTranslationProvider.BuildTranslateUrl(
+                "https://api.translator.azure.cn/");
+        if (globalMicrosoftUrl
+                != "https://api.cognitive.microsofttranslator.com/translate"
+            || customMicrosoftUrl
+                != "https://sample.cognitiveservices.azure.com/translator/text/v3.0/translate"
+            || chinaMicrosoftUrl
+                != "https://api.translator.azure.cn/translate")
+        {
+            Console.Error.WriteLine(
+                "MICROSOFT_ENDPOINT_MAPPING_FAILED="
+                + globalMicrosoftUrl + "|" + customMicrosoftUrl
+                + "|" + chinaMicrosoftUrl);
+            return 1;
+        }
+
         if (TranslationLanguages.ToGoogleCode("zh-Hans") != "zh-CN"
             || TranslationLanguages.ToGoogleCode("zh-Hant") != "zh-TW"
             || TranslationLanguages.ToDeepLTargetCode("pt-BR") != "PT-BR"
