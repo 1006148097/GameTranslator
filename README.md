@@ -8,7 +8,6 @@
   Windows 11 游戏截图翻译工具：按下快捷键、框选字幕，译文就会显示在屏幕上。
 </p>
 
-![游戏翻译器主界面](assets/screenshots/main-window.png)
 
 ## 最值得用的功能
 
@@ -60,8 +59,6 @@
 点击 **选择接口** 可以切换翻译服务。小白建议先选 **智能在线翻译**：程序会优先使用
 Google，2.5 秒没有结果时自动并行启用 MyMemory。
 
-![翻译接口选择](assets/screenshots/translation-providers.png)
-
 - **不想填写密钥**：选择“智能在线翻译”或“MyMemory 免费翻译”。
 - **国内网络更看重稳定性**：可以申请 Microsoft Translator 密钥后选择微软接口。
 - **已经有 DeepL 密钥**：可以选择 DeepL API。
@@ -77,7 +74,6 @@ API 密钥只保存在当前电脑的用户设置中，不会写入项目目录�
 3. 翻译进度和完成状态会显示在与截图翻译相同的悬浮输出框中；译文本身不会显示。
 4. 按 `Ctrl+V` 粘贴译文。
 
-![文本替换设置](assets/screenshots/text-replacement.png)
 
 ## 常见问题
 
