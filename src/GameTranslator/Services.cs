@@ -96,7 +96,9 @@ namespace GameTranslator
                     if (!TranslationLanguages.IsSupported(
                         settings.TextReplacementTargetLanguage))
                     {
-                        settings.TextReplacementTargetLanguage = "zh-Hans";
+                        settings.TextReplacementTargetLanguage =
+                            AppSettings.CreateDefault()
+                                .TextReplacementTargetLanguage;
                     }
                     if (string.IsNullOrWhiteSpace(
                         settings.LibreTranslateEndpoint))

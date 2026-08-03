@@ -34,7 +34,7 @@ namespace GameTranslator
                 Hotkey = "F8",
                 ToggleOverlayHotkey = "F7",
                 TextReplacementHotkey = "F6",
-                TextReplacementTargetLanguage = "zh-Hans",
+                TextReplacementTargetLanguage = "en",
                 FontSize = 22,
                 BackgroundOpacity = 0.22,
                 OverlayLeft = 80,

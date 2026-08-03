@@ -800,14 +800,15 @@ namespace GameTranslator
         {
             if (_textReplacementBusy)
             {
-                ShowTrayMessage(
-                    "正在翻译",
-                    "上一次文本翻译尚未完成，请稍候。",
-                    Forms.ToolTipIcon.Info);
+                EnsureOverlay();
+                _overlay.SetWorking("文本替换正在进行，请稍候");
+                SetStatus("上一次文本翻译尚未完成，请稍候。", false);
                 return;
             }
 
             _textReplacementBusy = true;
+            EnsureOverlay();
+            _overlay.SetWorking("读取选中文本");
             var currentReplacement = new CancellationTokenSource();
             _textReplacementCancellation = currentReplacement;
             var token = currentReplacement.Token;
@@ -826,6 +827,7 @@ namespace GameTranslator
                         await TextSelectionService.CopyAndDeleteAsync(token);
                     originalCopiedAndDeleteSent = true;
                     SetStatus("原文已复制，正在翻译…", false);
+                    _overlay.SetWorking("文本替换翻译");
 
                     var provider = TranslationProviderFactory.Create(
                         _settings.TranslationProvider);
@@ -849,10 +851,10 @@ namespace GameTranslator
                     SetStatus(
                         "文本已翻译为" + targetName + "并写入剪贴板。",
                         false);
-                    ShowTrayMessage(
-                        "翻译完成",
-                        "译文已复制，可按 Ctrl+V 粘贴。",
-                        Forms.ToolTipIcon.Info);
+                    _overlay.SetResult(
+                        "翻译完成\n译文已写入剪贴板，可按 Ctrl+V 粘贴。",
+                        "文本替换 · " + translated.Provider,
+                        translated.Duration);
                 }
                 catch (TranslationTimeoutException)
                 {
@@ -876,10 +878,7 @@ namespace GameTranslator
                             originalText,
                             originalCopiedAndDeleteSent);
                     SetStatus(message, true);
-                    ShowTrayMessage(
-                        "文本翻译超时",
-                        message + " " + recovery,
-                        Forms.ToolTipIcon.Error);
+                    _overlay.SetError(message + "\n" + recovery);
                 }
                 else if (canceled)
                 {
@@ -894,13 +893,12 @@ namespace GameTranslator
                             originalText,
                             originalCopiedAndDeleteSent);
                     SetStatus(failure.Message, true);
-                    ShowTrayMessage(
-                        "文本翻译失败",
-                        failure.Message
+                    _overlay.SetError(
+                        "文本翻译失败\n"
+                        + failure.Message
                         + (originalCopiedAndDeleteSent
-                            ? " " + recovery
-                            : " 没有删除任何文本。"),
-                        Forms.ToolTipIcon.Error);
+                            ? "\n" + recovery
+                            : "\n没有删除任何文本。"));
                 }
             }
             finally
@@ -940,18 +938,6 @@ namespace GameTranslator
                     return "剪贴板被占用，未能自动恢复原文。";
                 }
             }
-        }
-
-        private void ShowTrayMessage(
-            string title,
-            string message,
-            Forms.ToolTipIcon icon)
-        {
-            if (_trayIcon == null)
-            {
-                return;
-            }
-            _trayIcon.ShowBalloonTip(2500, title, message, icon);
         }
 
         private void SetStatus(string text, bool error)

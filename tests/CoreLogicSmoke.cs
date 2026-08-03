@@ -7,6 +7,14 @@ internal static class CoreLogicSmoke
 {
     private static int Main()
     {
+        if (AppSettings.CreateDefault()
+            .TextReplacementTargetLanguage != "en")
+        {
+            Console.Error.WriteLine(
+                "DEFAULT_TEXT_REPLACEMENT_LANGUAGE_FAILED");
+            return 1;
+        }
+
         var smartProvider = TranslationProviderFactory.Create(
             "智能在线翻译");
         var primaryProviderField = typeof(ResilientTranslationProvider)
