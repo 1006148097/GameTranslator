@@ -68,7 +68,16 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0">
+        <Grid Grid.Column="0"
+              Height="{Binding ActualHeight, ElementName=RightSettingsPanel}"
+              VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0">
             <TextBlock Text="截图设置"
                        FontSize="11" FontWeight="Bold" Foreground="#FF6A00"/>
             <TextBlock Text="截图" FontSize="22" FontWeight="Bold"
@@ -119,12 +128,41 @@
                 </Grid>
             </Border>
 
-            <Button x:Name="CaptureButton" Content="立即截图"
-                    Background="#151515" Foreground="White"
-                    Margin="0,6,0,0" Padding="10,7"/>
-        </StackPanel>
+                <Button x:Name="CaptureButton" Content="立即截图"
+                        Background="#151515" Foreground="White"
+                        Margin="0,6,0,0" Padding="10,7"/>
+            </StackPanel>
 
-        <StackPanel Grid.Column="2">
+            <Border Grid.Row="2"
+                    BorderBrush="{StaticResource Line}"
+                    BorderThickness="1"
+                    Padding="10"
+                    Margin="0,12,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4"/>
+                        <ColumnDefinition Width="9"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Background="{StaticResource Orange}"/>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="游戏显示提示"
+                                   FontSize="9"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource Orange}"/>
+                        <TextBlock Text="确保游戏在窗口或无边框窗口模式下运行"
+                                   FontSize="11"
+                                   FontWeight="Bold"
+                                   TextWrapping="Wrap"
+                                   Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <StackPanel x:Name="RightSettingsPanel"
+                    Grid.Column="2"
+                    VerticalAlignment="Top">
             <TextBlock Text="输出设置"
                        FontSize="11" FontWeight="Bold" Foreground="#FF6A00"/>
             <TextBlock Text="输出框" FontSize="22" FontWeight="Bold"
