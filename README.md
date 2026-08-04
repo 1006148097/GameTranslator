@@ -1,3 +1,4 @@
+<img width="1672" height="941" alt="exec-fb7697d6-650c-4dec-a6dd-21779da7646d" src="https://github.com/user-attachments/assets/7a1acc4e-8f5d-454d-a362-2aa3dba2480a" />
 <p align="center">
   <img src="assets/logo.png" width="88" alt="游戏翻译器图标">
 </p>
