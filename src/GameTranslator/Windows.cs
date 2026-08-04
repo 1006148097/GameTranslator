@@ -349,7 +349,8 @@ namespace GameTranslator
 
             _text = new TextBlock
             {
-                Text = "按下截图快捷键，框选需要翻译的游戏文字。",
+                Text = "按下截图快捷键，一键识图翻译\n"
+                    + "选中文字按下替换键，输出目标语言",
                 Foreground = new SolidColorBrush(WpfColor.FromRgb(21, 21, 21)),
                 FontFamily = new WpfFontFamily("Microsoft YaHei UI"),
                 FontSize = settings.FontSize,

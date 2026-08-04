@@ -5,6 +5,7 @@ param(
 $ErrorActionPreference = "Stop"
 $projectRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $sourceRoot = Join-Path $projectRoot "src\GameTranslator"
+$launcherSource = Join-Path $projectRoot "src\Launcher\Program.cs"
 $outputRoot = Join-Path $projectRoot "dist"
 $assetRoot = Join-Path $projectRoot "assets"
 $iconPath = Join-Path $assetRoot "logo.ico"
@@ -18,6 +19,10 @@ New-Item -ItemType Directory -Force -Path $outputRoot | Out-Null
 
 if (-not (Test-Path -LiteralPath $iconPath)) {
     throw "找不到应用图标：$iconPath"
+}
+
+if (-not (Test-Path -LiteralPath $launcherSource)) {
+    throw "找不到启动器源文件：$launcherSource"
 }
 
 $references = @(
@@ -63,8 +68,26 @@ Copy-Item -LiteralPath (Join-Path $assetRoot "logo.png") `
 Copy-Item -LiteralPath $iconPath `
     -Destination (Join-Path $outputRoot "logo.ico") -Force
 
-Write-Host "BUILD OK: $outputRoot\GameTranslator.exe"
+$launcherOutput = Join-Path $projectRoot "GameTranslator.exe"
+$launcherArguments = @(
+    "/nologo",
+    "/target:winexe",
+    "/platform:x64",
+    "/optimize+",
+    "/win32icon:$iconPath",
+    "/out:$launcherOutput",
+    "/reference:C:\Windows\Microsoft.NET\Framework64\v4.0.30319\System.Windows.Forms.dll",
+    $launcherSource
+)
+
+& $compiler $launcherArguments
+if ($LASTEXITCODE -ne 0) {
+    throw "启动器编译失败，退出代码：$LASTEXITCODE"
+}
+
+Write-Host "BUILD OK: $launcherOutput"
+Write-Host "APP:      $outputRoot\GameTranslator.exe"
 
 if ($Run) {
-    Start-Process -FilePath (Join-Path $outputRoot "GameTranslator.exe")
+    Start-Process -FilePath $launcherOutput
 }

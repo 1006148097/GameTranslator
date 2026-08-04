@@ -10,6 +10,7 @@ obj/
 tests/*-regression.exe
 tests/OcrBridge.ps1
 tests/diagnostic-fixtures/
+dist/CoreLogic*.exe
 
 # Windows and temporary files
 Thumbs.db
